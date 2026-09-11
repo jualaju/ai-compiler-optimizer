@@ -1,3 +1,4 @@
 torch>=2.2
 numpy
+rich>=13.7
 # On an NVIDIA machine, also install triton (see README.md).

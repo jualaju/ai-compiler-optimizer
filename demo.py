@@ -1,52 +1,68 @@
-"""Presentation entry point: capture, fuse, emit source, check, optionally launch."""
-import torch
-from compiler import AffineReLU, capture, fuse, generate_triton, interpret
-from runtime import TritonRuntime, gpu_unavailable_reason
+"""Full-screen presentation of the existing compiler; CPU validation only."""
+import argparse
+import ast
+from datetime import datetime
+
+from demo_ui import DemoUI
 
 
 def main():
-    torch.manual_seed(0)
-    inputs = (torch.randn(1025), torch.tensor(1.5), torch.tensor(-0.25))
-    model = AffineReLU()
-    print("=== ORIGINAL MODEL ===")
-    print("x → multiply(scale) → add(bias) → relu")
-    print("\n=== FX GRAPH ===")
-    print(torch.fx.symbolic_trace(model).graph)
-    before = capture(model, inputs)
-    print("\n=== OUR IR BEFORE OPTIMIZATION ===")
-    print(before)
-    after = fuse(before)
-    print("\n=== APPLYING FUSION ===")
-    print("Our fusion pass replaces multiply + add + relu with fused_affine_relu.")
-    print("\n=== OUR IR AFTER OPTIMIZATION ===")
-    print(after)
-    path = generate_triton(after)
-    print("\n=== GENERATED TRITON KERNEL ===")
-    print(path.read_text())
-    print("=== CORRECTNESS ===")
-    expected = model(*inputs)
-    torch.testing.assert_close(interpret(before, *inputs)[0], expected)
-    torch.testing.assert_close(interpret(after, *inputs)[0], expected)
-    print("CPU IR correctness: PASS — original and optimized IR match the PyTorch reference.")
-    reason = gpu_unavailable_reason()
-    if reason:
-        print(f"SKIPPED GPU execution: {reason}")
-    else:
-        actual = TritonRuntime(after, path)(*(x.cuda() for x in inputs))
-        torch.testing.assert_close(actual.cpu(), expected)
-        print("GPU Triton correctness: PASS")
-    original_count = sum(op.kind != "input" for op in before.ops)
-    optimized_count = sum(op.kind != "input" for op in after.ops)
-    print("\n=== OPTIMIZATION SUMMARY ===")
-    print(f"Original operation count: {original_count} (excluding inputs)")
-    print(f"Optimized operation count: {optimized_count} (excluding inputs)")
-    print("Original kernel-launch count: 3 conceptual elementwise kernels")
-    print("Fused kernel-launch count: 1 (generated Triton kernel)")
-    print(f"Intermediate tensor materializations avoided: {original_count - optimized_count} "
-          "(multiply and add results in the generated kernel)")
-    print("CPU interpretation checks semantics; it does not execute the fused GPU kernel.")
-    print("Actual GPU latency/speedup requires an NVIDIA GPU and has NOT been measured on this machine.")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--debug', action='store_true', help='open raw compiler details')
+    args = parser.parse_args()
+    ui = DemoUI()
+    ui.intro()
+    x = ui.numbers('Tensor', '2 -1 3 4')
+    scale = ui.numbers('Scale', '1.5', scalar=True)
+    bias = ui.numbers('Bias', '0.5', scalar=True)
+    ui.console.clear()
+    trace = []
+
+    def record(tag, message):
+        trace.append((datetime.now().strftime('%H:%M:%S'), tag, message))
+
+    with ui.console.status('[cyan]Compiling graph and validating CPU semantics…', spinner='dots'):
+        import torch
+        from compiler import AffineReLU, capture, fuse, generate_triton, interpret
+        from runtime import gpu_unavailable_reason
+
+        inputs = tuple(torch.tensor(v, dtype=torch.float32) for v in (x, scale, bias))
+        model = AffineReLU()
+        before = capture(model, inputs)
+        record('GRAPH', 'FX graph captured')
+        record('IR', 'Lowered to custom IR')
+        after = fuse(before)
+        fused = any(op.kind == 'fused_affine_relu' for op in after.ops)
+        record('FUSE', 'MUL → ADD → ReLU pattern detected' if fused else 'No fusion pattern found')
+        count = lambda graph: sum(op.kind != 'input' for op in graph.ops)
+        record('FUSE', f'{count(before)} ops → {count(after)} fused op' if fused else 'Graph preserved')
+        path = generate_triton(after)
+        source = path.read_text()
+        ast.parse(source)  # Verify Python syntax without importing or executing Triton.
+        record('CODE', 'Triton source generated; syntax verified')
+        expected = model(*inputs)
+        original = interpret(before, *inputs)[0]
+        optimized = interpret(after, *inputs)[0]
+        torch.testing.assert_close(original, expected)
+        torch.testing.assert_close(optimized, expected)
+        torch.testing.assert_close(original, optimized)
+        record('CHECK', 'CPU numerical equivalence verified ✓')
+        reason = gpu_unavailable_reason()
+        record('GPU', 'Execution unavailable' if reason else 'Execution not requested; CPU demo')
+        debug = (f'FX GRAPH\n{torch.fx.symbolic_trace(model).graph}\n\n'
+                 f'CUSTOM IR / BEFORE\n{before}\n\nCUSTOM IR / AFTER\n{after}\n\n'
+                 f'GENERATED SOURCE\n{path}\n{source}') if args.debug else None
+    ui.show(dict(before=before, after=after, inputs=inputs, original=original,
+                 optimized=optimized, source=source, path=path, trace=trace,
+                 reason=reason, fused=fused, debug=debug), debug=args.debug)
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        pass
+    except Exception as exc:
+        from rich.console import Console
+        Console(stderr=True).print(f'Compiler demo failed: {exc}', style='bold red', markup=False)
+        raise SystemExit(1)

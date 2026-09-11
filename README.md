@@ -24,13 +24,21 @@ Requires Python 3.10+. No Triton installation is needed for CPU use.
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cpu
+python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+python -m pip install -r requirements.txt
 python demo.py
 python -m unittest -v
 python benchmark.py
 ```
 
-The demo prints both IR graphs, checks their outputs against eager PyTorch,
+The interactive demo accepts space-separated tensor values, scale and bias;
+press Enter for defaults (`2 -1 3 4`, `1.5`, `0.5`). It uses restrained Rich
+panels and syntax highlighting, with a plain-text fallback when Rich is absent.
+Install the presentation dependency alone with `python3 -m pip install rich`.
+Piped input works too; end-of-input selects defaults. Long tensors show a
+labelled preview, while validation compares every element.
+
+The demo prints the FX graph and both IR graphs, checks their outputs against eager PyTorch,
 and saves and prints `generated/affine_relu_kernel.py`. The source can be
 generated and syntax-checked without importing Triton. On a CPU machine,
 GPU execution and benchmarks print an explicit skip message; GPU tests are
@@ -69,6 +77,7 @@ is omitted. No speedup is assumed or fabricated.
   CPU interpreter and source generation.
 - `runtime.py`: hardware checks, generated module loading and kernel launch.
 - `demo.py`: presentation workflow.
+- `demo_ui.py`: terminal panels, input handling and graph/metric formatting.
 - `benchmark.py`: GPU correctness and timing comparison.
 - `test_compiler.py`: CPU coverage and hardware-gated GPU correctness tests.
 - `generated/affine_relu_kernel.py`: readable generated presentation artifact.
