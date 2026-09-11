@@ -98,6 +98,8 @@ class DemoUI:
 
     def input_panel(self, data, rows):
         x, scale, bias = data['inputs']
+        scale_text = f'{scale.item():.4g}' if scale.numel() == 1 else f'[{scale.numel()}D]'
+        bias_text = f'{bias.item():.4g}' if bias.numel() == 1 else f'[{bias.numel()}D]'
         values = x.flatten().tolist()
         peak = max((abs(v) for v in values), default=1) or 1
         table = Table.grid(expand=True, padding=(0, 1))
@@ -111,7 +113,7 @@ class DemoUI:
         if len(values) > limit:
             table.add_row('…', f'+{len(values)-limit}', '')
         return panel('INPUT VECTOR', Group(table,
-            Text(f'scale {scale.item():.4g}  •  bias {bias.item():.4g}', style='cyan'),
+            Text(f'scale {scale_text}  •  bias {bias_text}', style='cyan'),
             Text(f'float32 • {len(values)} elements', style='dim')))
 
     def result(self, data):
