@@ -1,0 +1,2 @@
+torch>=2.2
+# On an NVIDIA machine, also install triton (see README.md).
