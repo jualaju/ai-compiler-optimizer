@@ -204,38 +204,8 @@ class DemoUI:
             if debug:
                 self.console.print(panel('DEBUG DETAILS', Text(self.details(data))))
             return
-        import termios
-        import tty
-        mode = 'd' if debug else 'dashboard'
-        offset = 0
-        original_settings = termios.tcgetattr(sys.stdin)
-        try:
-            tty.setcbreak(sys.stdin.fileno())
-            with Live(console=self.console, screen=True, auto_refresh=False) as live:
-                while True:
-                    if mode == 'dashboard':
-                        view = self.dashboard(data)
-                    else:
-                        lines = (data['source'] if mode == 'k' else self.details(data)).splitlines()
-                        page_size = max(1, self.console.height - 12)
-                        offset = min(offset, max(0, len(lines) - page_size))
-                        body = '\n'.join(lines[offset:offset + page_size])
-                        content = Syntax(body, 'python', theme='ansi_dark', word_wrap=True) if mode == 'k' else Text(body)
-                        view = Group(self.status(data), panel('GENERATED GPU KERNEL // TRITON' if mode == 'k' else 'COMPILER DETAILS', content),
-                            Text(f'Lines {offset+1}–{min(offset+page_size, len(lines))}/{len(lines)} • N/P scroll • G dashboard • Q quit', style='cyan'))
-                    live.update(view, refresh=True)
-                    if select.select([sys.stdin], [], [], 0.25)[0]:
-                        key = sys.stdin.read(1).lower()
-                        if not key or key == 'q':
-                            break
-                        if key in ('k', 'd', 'g'):
-                            mode = 'dashboard' if key == 'g' else key
-                            offset = 0
-                        elif key == 'n':
-                            offset += 1
-                        elif key == 'p':
-                            offset = max(0, offset - 1)
-        finally:
-            termios.tcsetattr(sys.stdin, termios.TCSADRAIN, original_settings)
-        # Alternate-screen contents disappear on exit; retain the result for review.
-        self.console.print(self.dashboard(data))
+        from terminal_controls import browse
+        browse(self.console, lambda: self.dashboard(data),
+               {'k': lambda: data['source'], 'd': lambda: self.details(data)},
+               titles={'k': 'Kernel', 'd': 'Details'},
+               initial='d' if debug else 'overview', home_key='g', up_key='p', syntax_views=('k',))

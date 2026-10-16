@@ -1,0 +1,2 @@
+# Optional browser integration tests only; not needed to run Studio or core tests.
+playwright>=1.50,<2

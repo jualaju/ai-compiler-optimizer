@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "name": "native_affine",
+  "nodes": [
+    {"name": "x", "op": "input", "shape": [4], "dtype": "float32"},
+    {"name": "scale", "op": "constant", "dtype": "float32", "value": 1.5},
+    {"name": "bias", "op": "constant", "dtype": "float32", "value": 0.5},
+    {"name": "product", "op": "multiply", "inputs": ["x", "scale"]},
+    {"name": "affine", "op": "add", "inputs": ["product", "bias"]},
+    {"name": "y", "op": "relu", "inputs": ["affine"]}
+  ],
+  "outputs": ["y"]
+}

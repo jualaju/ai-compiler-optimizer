@@ -1,0 +1,552 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-16T03:56:22.417012+00:00",
+  "environment": {
+    "platform": "Linux-6.17.0-29-generic-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "cpu_model": "Intel(R) Core(TM) i3-8130U CPU @ 2.20GHz",
+    "processor": "x86_64",
+    "cpu_count": 4,
+    "python": "3.12.3 (main, Mar 23 2026, 19:04:32) [GCC 13.3.0]",
+    "torch": "2.14.0+cpu",
+    "torch_threads": 1,
+    "interop_threads": 2,
+    "cuda_available": false,
+    "backend": "cpu-torch-interpreter",
+    "pid": 13,
+    "torch_config": "PyTorch built with:\n  - GCC 13.3\n  - C++ Version: 202002\n  - Intel(R) oneAPI Math Kernel Library Version 2024.2-Product Build 20240605 for Intel(R) 64 architecture applications\n  - Intel(R) MKL-DNN v3.12.0 (Git Hash 80afa71049cd69a3df32adcccb623b12cd7baa22)\n  - OpenMP 201511 (a.k.a. OpenMP 4.5)\n  - LAPACK is enabled (usually provided by MKL)\n  - NNPACK is enabled\n  - CPU capability usage: AVX2\n  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, COMMIT_SHA=08187d9e0fba026dc8217405802ab5381dc88d90, CUDA_FLAGS= -DLIBCUDACXX_ENABLE_SIMPLIFIED_COMPLEX_OPERATIONS -Xfatbin -compress-all  -Wno-deprecated-gpu-targets --expt-extended-lambda -DCUB_WRAPPED_NAMESPACE=at_cuda_detail -DDISABLE_CUSPARSE_DEPRECATED -DCUDA_HAS_FP16=1 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -DC10_NODEPRECATED, CXX_COMPILER=/opt/rh/gcc-toolset-13/root/usr/bin/c++, CXX_FLAGS= -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DUSE_FBGEMM -DUSE_PYTORCH_QNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -DC10_NODEPRECATED -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=range-loop-construct -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wsuggest-override -Wno-psabi -Wno-error=old-style-cast -faligned-new -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-dangling-reference -Wno-error=dangling-reference -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, TORCH_VERSION=2.14.0, USE_CUDA=0, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_HIPSPARSELT=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \n",
+    "dependencies": {
+      "torch": "2.14.0+cpu",
+      "numpy": "2.5.3",
+      "rich": "15.0.0",
+      "onnx": "1.23.2"
+    },
+    "source_sha256": {
+      "mlcompiler/ir.py": "747462811ad79cdbff230f1c1c1a2349defb16d28e8f568316866b7564d98d87",
+      "mlcompiler/backend.py": "f495114f564fc56b8bd1d4480d2054984501319d25ac1e47a053e5cc0e1b7370",
+      "mlcompiler/planner.py": "73cd6b6ea5bd241a8b0dbebdd235c26a2b2bbc1c537737334660210ef49c15cb",
+      "mlcompiler/workloads.py": "8be0cadd111b111c3b1e146743837308bb943614d1fac6deb44847bf07ff72bc",
+      "mlcompiler/passes.py": "33378ad5a6ae411f39038726008b1f59ea0c30b302d7cf50e303518a75161c28",
+      "mlcompiler/__init__.py": "18538c139c8b3b96dc30289fe0f0d83cf66bac5bb932466fbb804e36474df651",
+      "mlcompiler/__main__.py": "174734a632f321b8ecee2f5f21686db04c310a3a7f36e9f4881a56e0794223ca",
+      "mlcompiler/measurement.py": "11b79e2de964071d00688f4fb2d93da348ed94e78c0a6912d83d832aea58b281",
+      "mlcompiler/frontends.py": "603a387ce9805204276c7e54b81bbd92546ad04431ebd8dbfdda1706b383e3f4",
+      "mlcompiler/dashboard.py": "d3b38132ff693162749b49f141ebafad936ddee4b4efd44c486dd67d6cacd232",
+      "mlcompiler/experiment.py": "dda50c564c329ef68e43831cee58f14fb767e39aedb1ec43859f8938fb889d03",
+      "compiler.py": "a2e906e64cd0da873f59002130d95c47741ccb8067ef94c7869483ac2388ec80",
+      "runtime.py": "265097104edd6a723a3763d2389fd201f4eb7549a5b53c5a39de1cc7275cf767"
+    }
+  },
+  "measurement": {
+    "warmup": 3,
+    "batches": 7,
+    "iterations": 20,
+    "seed": 19
+  },
+  "learning": "No fitted model. Online workload-local calibration only. Family splits reserved for future model training; evaluation observations never influence decisions.",
+  "limitations": [
+    "CPU interpreter timings include Python overhead; not native CPU code generation",
+    "Fused CPU nodes still materialize PyTorch intermediates",
+    "No GPU execution or timings",
+    "No reliable memory-use measurements collected",
+    "Small noisy sample; does not establish novelty or general performance gains"
+  ],
+  "workloads": [
+    {
+      "name": "mlp",
+      "family": "mlp",
+      "seed": 7,
+      "frontend": "torch",
+      "frontend_preparation_ms": 1121.150759999182,
+      "frontend_reference_checked": true,
+      "input_parameters": [
+        {
+          "shape": [
+            32,
+            16
+          ],
+          "dtype": "torch.float32"
+        }
+      ],
+      "original_graph": "graph Model(%x):\n  %x = input() : (32, 16) / torch.float32\n  %w1 = constant() : (16, 32) / torch.float32 value=[-0.03763984516263008, 0.07725351303815842, 0.047076642513275146, -0.05893082171678543, -0.18052464723587036, 0.10446349531412125]\u2026\n  %matmul = matmul(%x, %w1) : (32, 32) / torch.float32\n  %b1 = constant() : (32,) / torch.float32 value=[-0.6535819172859192, 1.1672505140304565, 0.4623458981513977, -0.9112226366996765, 0.19996467232704163, 0.33673733472824097]\u2026\n  %add = add(%matmul, %b1) : (32, 32) / torch.float32\n  %relu = relu(%add) : (32, 32) / torch.float32\n  %w2 = constant() : (32, 4) / torch.float32 value=[-0.12404396384954453, 0.07833840698003769, -0.02799706533551216, 0.004976978991180658, 0.05326176807284355, 0.04051275923848152]\u2026\n  %matmul_1 = matmul(%relu, %w2) : (32, 4) / torch.float32\n  %b2 = constant() : (4,) / torch.float32 value=[0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612]\n  %add_1 = add(%matmul_1, %b2) : (32, 4) / torch.float32\n  return %add_1",
+      "features": {
+        "compute_ops": 5,
+        "operators": {
+          "matmul": 2,
+          "add": 2,
+          "relu": 1
+        },
+        "inputs": 1,
+        "constants": 4,
+        "shared_values": 0,
+        "shapes": [
+          [
+            32,
+            16
+          ]
+        ],
+        "dtypes": [
+          "torch.float32"
+        ],
+        "estimated_compute_output_bytes": 13312,
+        "memory_note": "Sum of logical compute output sizes; not measured peak memory or allocation count"
+      },
+      "strategies": {
+        "baseline": {
+          "candidate": "baseline",
+          "decision": "No optimization requested",
+          "planning_ms": 0.139127999318589,
+          "optimization_ms": 0.0014150000424706377,
+          "backend_compile_ms": 1.0266239996781223,
+          "final_validation_ms": 3.003748000082851,
+          "total_compile_ms": 4.173004000222136,
+          "compile_time_invariants": "topology, arity, metadata, static shapes checked",
+          "sample_validation": {
+            "passed": true,
+            "samples": 2,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "heldout_validation": {
+            "passed": true,
+            "samples": 1,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "graph": "graph Model(%x):\n  %x = input() : (32, 16) / torch.float32\n  %w1 = constant() : (16, 32) / torch.float32 value=[-0.03763984516263008, 0.07725351303815842, 0.047076642513275146, -0.05893082171678543, -0.18052464723587036, 0.10446349531412125]\u2026\n  %matmul = matmul(%x, %w1) : (32, 32) / torch.float32\n  %b1 = constant() : (32,) / torch.float32 value=[-0.6535819172859192, 1.1672505140304565, 0.4623458981513977, -0.9112226366996765, 0.19996467232704163, 0.33673733472824097]\u2026\n  %add = add(%matmul, %b1) : (32, 32) / torch.float32\n  %relu = relu(%add) : (32, 32) / torch.float32\n  %w2 = constant() : (32, 4) / torch.float32 value=[-0.12404396384954453, 0.07833840698003769, -0.02799706533551216, 0.004976978991180658, 0.05326176807284355, 0.04051275923848152]\u2026\n  %matmul_1 = matmul(%relu, %w2) : (32, 4) / torch.float32\n  %b2 = constant() : (4,) / torch.float32 value=[0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612]\n  %add_1 = add(%matmul_1, %b2) : (32, 4) / torch.float32\n  return %add_1",
+          "analysis": {
+            "compute_ops": 5,
+            "operators": {
+              "matmul": 2,
+              "add": 2,
+              "relu": 1
+            },
+            "inputs": 1,
+            "constants": 4,
+            "shared_values": 0,
+            "shapes": [
+              [
+                32,
+                16
+              ]
+            ],
+            "dtypes": [
+              "torch.float32"
+            ],
+            "estimated_compute_output_bytes": 13312,
+            "memory_note": "Sum of logical compute output sizes; not measured peak memory or allocation count"
+          },
+          "pass_records": [],
+          "calibration": {},
+          "execution": {
+            "raw_ms": [
+              0.03640655,
+              0.1028054,
+              0.03575915,
+              0.03572405,
+              0.0358337,
+              0.035806,
+              0.03550005
+            ],
+            "median_ms": 0.035806,
+            "min_ms": 0.03550005,
+            "max_ms": 0.1028054,
+            "stdev_ms": 0.025312710433293428,
+            "mad_ms": 8.19499999999973e-05
+          }
+        },
+        "conventional": {
+          "candidate": "conventional",
+          "decision": "Deterministic bounded fixed-point pass policy; failed rewrites roll back",
+          "planning_ms": 3.693466000186163,
+          "optimization_ms": 3.614962000028754,
+          "backend_compile_ms": 1.0241809995932272,
+          "final_validation_ms": 2.51064599979145,
+          "total_compile_ms": 7.23137300064991,
+          "compile_time_invariants": "topology, arity, metadata, static shapes checked",
+          "sample_validation": {
+            "passed": true,
+            "samples": 2,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "heldout_validation": {
+            "passed": true,
+            "samples": 1,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "graph": "graph Model(%x):\n  %x = input() : (32, 16) / torch.float32\n  %w1 = constant() : (16, 32) / torch.float32 value=[-0.03763984516263008, 0.07725351303815842, 0.047076642513275146, -0.05893082171678543, -0.18052464723587036, 0.10446349531412125]\u2026\n  %matmul = matmul(%x, %w1) : (32, 32) / torch.float32\n  %b1 = constant() : (32,) / torch.float32 value=[-0.6535819172859192, 1.1672505140304565, 0.4623458981513977, -0.9112226366996765, 0.19996467232704163, 0.33673733472824097]\u2026\n  %add = add(%matmul, %b1) : (32, 32) / torch.float32\n  %relu = relu(%add) : (32, 32) / torch.float32\n  %w2 = constant() : (32, 4) / torch.float32 value=[-0.12404396384954453, 0.07833840698003769, -0.02799706533551216, 0.004976978991180658, 0.05326176807284355, 0.04051275923848152]\u2026\n  %matmul_1 = matmul(%relu, %w2) : (32, 4) / torch.float32\n  %b2 = constant() : (4,) / torch.float32 value=[0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612]\n  %add_1 = add(%matmul_1, %b2) : (32, 4) / torch.float32\n  return %add_1",
+          "analysis": {
+            "compute_ops": 5,
+            "operators": {
+              "matmul": 2,
+              "add": 2,
+              "relu": 1
+            },
+            "inputs": 1,
+            "constants": 4,
+            "shared_values": 0,
+            "shapes": [
+              [
+                32,
+                16
+              ]
+            ],
+            "dtypes": [
+              "torch.float32"
+            ],
+            "estimated_compute_output_bytes": 13312,
+            "memory_note": "Sum of logical compute output sizes; not measured peak memory or allocation count"
+          },
+          "pass_records": [
+            {
+              "name": "constant_folding",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Folded 0 static expressions; 0 skipped (unknown/over-budget size); no structural progress",
+              "validated": false,
+              "before_ops": 5,
+              "after_ops": 5,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "dead_code_elimination",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Removed 0 unreachable pure values; input signature preserved; no structural progress",
+              "validated": false,
+              "before_ops": 5,
+              "after_ops": 5,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "algebraic_simplification",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 5,
+              "after_ops": 5,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "layout_simplification",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 5,
+              "after_ops": 5,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "affine_relu_fusion",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 5,
+              "after_ops": 5,
+              "applicable": false,
+              "candidate": "conventional"
+            }
+          ],
+          "calibration": {},
+          "execution": {
+            "raw_ms": [
+              0.03571875,
+              0.03878295,
+              0.0366163,
+              0.0352094,
+              0.03557445,
+              0.0356629,
+              0.0353462
+            ],
+            "median_ms": 0.0356629,
+            "min_ms": 0.0352094,
+            "max_ms": 0.03878295,
+            "stdev_ms": 0.00125382234510924,
+            "mad_ms": 0.00031669999999999615
+          }
+        },
+        "intelligent": {
+          "candidate": "baseline",
+          "decision": "No distinct validated optimization candidate; baseline fallback without timing search",
+          "planning_ms": 7.1782740005801315,
+          "optimization_ms": 3.4194669997305027,
+          "backend_compile_ms": 1.0102799997184775,
+          "final_validation_ms": 2.454123999996227,
+          "total_compile_ms": 10.647423000591516,
+          "compile_time_invariants": "topology, arity, metadata, static shapes checked",
+          "sample_validation": {
+            "passed": true,
+            "samples": 2,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "heldout_validation": {
+            "passed": true,
+            "samples": 1,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "graph": "graph Model(%x):\n  %x = input() : (32, 16) / torch.float32\n  %w1 = constant() : (16, 32) / torch.float32 value=[-0.03763984516263008, 0.07725351303815842, 0.047076642513275146, -0.05893082171678543, -0.18052464723587036, 0.10446349531412125]\u2026\n  %matmul = matmul(%x, %w1) : (32, 32) / torch.float32\n  %b1 = constant() : (32,) / torch.float32 value=[-0.6535819172859192, 1.1672505140304565, 0.4623458981513977, -0.9112226366996765, 0.19996467232704163, 0.33673733472824097]\u2026\n  %add = add(%matmul, %b1) : (32, 32) / torch.float32\n  %relu = relu(%add) : (32, 32) / torch.float32\n  %w2 = constant() : (32, 4) / torch.float32 value=[-0.12404396384954453, 0.07833840698003769, -0.02799706533551216, 0.004976978991180658, 0.05326176807284355, 0.04051275923848152]\u2026\n  %matmul_1 = matmul(%relu, %w2) : (32, 4) / torch.float32\n  %b2 = constant() : (4,) / torch.float32 value=[0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612]\n  %add_1 = add(%matmul_1, %b2) : (32, 4) / torch.float32\n  return %add_1",
+          "analysis": {
+            "compute_ops": 5,
+            "operators": {
+              "matmul": 2,
+              "add": 2,
+              "relu": 1
+            },
+            "inputs": 1,
+            "constants": 4,
+            "shared_values": 0,
+            "shapes": [
+              [
+                32,
+                16
+              ]
+            ],
+            "dtypes": [
+              "torch.float32"
+            ],
+            "estimated_compute_output_bytes": 13312,
+            "memory_note": "Sum of logical compute output sizes; not measured peak memory or allocation count"
+          },
+          "pass_records": [
+            {
+              "name": "constant_folding",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Folded 0 static expressions; 0 skipped (unknown/over-budget size); no structural progress",
+              "validated": false,
+              "before_ops": 5,
+              "after_ops": 5,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "dead_code_elimination",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Removed 0 unreachable pure values; input signature preserved; no structural progress",
+              "validated": false,
+              "before_ops": 5,
+              "after_ops": 5,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "algebraic_simplification",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 5,
+              "after_ops": 5,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "layout_simplification",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 5,
+              "after_ops": 5,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "affine_relu_fusion",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 5,
+              "after_ops": 5,
+              "applicable": false,
+              "candidate": "conventional"
+            }
+          ],
+          "calibration": {},
+          "execution": {
+            "raw_ms": [
+              0.0362163,
+              0.04248265,
+              0.0356611,
+              0.0353856,
+              0.03505445,
+              0.0356681,
+              0.03581505
+            ],
+            "median_ms": 0.0356681,
+            "min_ms": 0.03505445,
+            "max_ms": 0.04248265,
+            "stdev_ms": 0.002613472023864767,
+            "mad_ms": 0.00028249999999999803
+          }
+        }
+      },
+      "original_graph_sha256": "f3a1e9720af0efbe236292c0e40e4d8098f9f82c6786a686bd5bcf4a51cfb815",
+      "evaluation": {
+        "config": {
+          "warmup": 3,
+          "batches": 7,
+          "iterations": 20,
+          "seed": 19
+        },
+        "orders": [
+          [
+            "conventional",
+            "candidate/baseline",
+            "intelligent",
+            "baseline"
+          ],
+          [
+            "baseline",
+            "intelligent",
+            "candidate/baseline",
+            "conventional"
+          ],
+          [
+            "conventional",
+            "baseline",
+            "candidate/baseline",
+            "intelligent"
+          ],
+          [
+            "candidate/baseline",
+            "conventional",
+            "baseline",
+            "intelligent"
+          ],
+          [
+            "baseline",
+            "intelligent",
+            "conventional",
+            "candidate/baseline"
+          ],
+          [
+            "candidate/baseline",
+            "intelligent",
+            "conventional",
+            "baseline"
+          ],
+          [
+            "conventional",
+            "candidate/baseline",
+            "intelligent",
+            "baseline"
+          ]
+        ],
+        "timings": {
+          "baseline": {
+            "raw_ms": [
+              0.03640655,
+              0.1028054,
+              0.03575915,
+              0.03572405,
+              0.0358337,
+              0.035806,
+              0.03550005
+            ],
+            "median_ms": 0.035806,
+            "min_ms": 0.03550005,
+            "max_ms": 0.1028054,
+            "stdev_ms": 0.025312710433293428,
+            "mad_ms": 8.19499999999973e-05
+          },
+          "conventional": {
+            "raw_ms": [
+              0.03571875,
+              0.03878295,
+              0.0366163,
+              0.0352094,
+              0.03557445,
+              0.0356629,
+              0.0353462
+            ],
+            "median_ms": 0.0356629,
+            "min_ms": 0.0352094,
+            "max_ms": 0.03878295,
+            "stdev_ms": 0.00125382234510924,
+            "mad_ms": 0.00031669999999999615
+          },
+          "intelligent": {
+            "raw_ms": [
+              0.0362163,
+              0.04248265,
+              0.0356611,
+              0.0353856,
+              0.03505445,
+              0.0356681,
+              0.03581505
+            ],
+            "median_ms": 0.0356681,
+            "min_ms": 0.03505445,
+            "max_ms": 0.04248265,
+            "stdev_ms": 0.002613472023864767,
+            "mad_ms": 0.00028249999999999803
+          },
+          "candidate/baseline": {
+            "raw_ms": [
+              0.036071,
+              0.03603305,
+              0.03625795,
+              0.03605685,
+              0.0359332,
+              0.03688645,
+              0.03610415
+            ],
+            "median_ms": 0.036071,
+            "min_ms": 0.0359332,
+            "max_ms": 0.03688645,
+            "stdev_ms": 0.0003213193199251226,
+            "mad_ms": 3.795000000000187e-05
+          }
+        },
+        "method": "perf_counter_ns; warm CPU inference; randomized interleaved batches; includes Python dispatch/allocation and input checks; excludes compilation and validation"
+      },
+      "selection": {
+        "candidate_set": [
+          "baseline"
+        ],
+        "evaluation_oracle": "baseline",
+        "regret_ms": -0.0004028999999999977,
+        "baseline_speedup_ratio": 1.003866199769542,
+        "conventional_speedup_ratio": 1.0040125732904503,
+        "regression_vs_baseline": false,
+        "regression_threshold_fraction": 0.05,
+        "selected_within_5pct_of_observed_oracle": true,
+        "extra_planning_ms": 7.0391460012615426,
+        "extra_total_compile_ms": 6.47441900036938,
+        "break_even_calls_vs_baseline": 46950.10152552249,
+        "note": "Oracle/regret are noisy held-out observations over enumerated candidates, not ground truth or a trained-model accuracy claim"
+      },
+      "split": "evaluation"
+    }
+  ]
+}

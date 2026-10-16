@@ -1,0 +1,977 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-16T05:18:07.561738+00:00",
+  "environment": {
+    "platform": "Linux-6.17.0-29-generic-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "cpu_model": "Intel(R) Core(TM) i3-8130U CPU @ 2.20GHz",
+    "processor": "x86_64",
+    "cpu_count": 4,
+    "python": "3.12.3 (main, Mar 23 2026, 19:04:32) [GCC 13.3.0]",
+    "torch": "2.14.0+cpu",
+    "torch_threads": 1,
+    "interop_threads": 2,
+    "cuda_available": false,
+    "backend": "cpu-torch-interpreter",
+    "pid": 22787,
+    "torch_config": "PyTorch built with:\n  - GCC 13.3\n  - C++ Version: 202002\n  - Intel(R) oneAPI Math Kernel Library Version 2024.2-Product Build 20240605 for Intel(R) 64 architecture applications\n  - Intel(R) MKL-DNN v3.12.0 (Git Hash 80afa71049cd69a3df32adcccb623b12cd7baa22)\n  - OpenMP 201511 (a.k.a. OpenMP 4.5)\n  - LAPACK is enabled (usually provided by MKL)\n  - NNPACK is enabled\n  - CPU capability usage: AVX2\n  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, COMMIT_SHA=08187d9e0fba026dc8217405802ab5381dc88d90, CUDA_FLAGS= -DLIBCUDACXX_ENABLE_SIMPLIFIED_COMPLEX_OPERATIONS -Xfatbin -compress-all  -Wno-deprecated-gpu-targets --expt-extended-lambda -DCUB_WRAPPED_NAMESPACE=at_cuda_detail -DDISABLE_CUSPARSE_DEPRECATED -DCUDA_HAS_FP16=1 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -DC10_NODEPRECATED, CXX_COMPILER=/opt/rh/gcc-toolset-13/root/usr/bin/c++, CXX_FLAGS= -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DUSE_FBGEMM -DUSE_PYTORCH_QNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -DC10_NODEPRECATED -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=range-loop-construct -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wsuggest-override -Wno-psabi -Wno-error=old-style-cast -faligned-new -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-dangling-reference -Wno-error=dangling-reference -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, TORCH_VERSION=2.14.0, USE_CUDA=0, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_HIPSPARSELT=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \n",
+    "dependencies": {
+      "torch": "2.14.0+cpu",
+      "numpy": "2.5.3",
+      "rich": "15.0.0",
+      "onnx": "1.23.2"
+    },
+    "source_sha256": {
+      "mlcompiler/ir.py": "c202db60594dc602c9e30b863f532889c8d31a290d1b176f8b19c48554e3d418",
+      "mlcompiler/backend.py": "f495114f564fc56b8bd1d4480d2054984501319d25ac1e47a053e5cc0e1b7370",
+      "mlcompiler/planner.py": "722726015bef7e1c3ce9cb10713e37d6e144d108235d87f51be6ac09922dbb97",
+      "mlcompiler/workloads.py": "736c988b507a23a46172eb8d6ceca2078aebfe657e35c28e8a17f177137d053d",
+      "mlcompiler/passes.py": "571b5eaa91ff2836764570cfe4ea80ed97855b81c1168b6cd384a9a74046e087",
+      "mlcompiler/__init__.py": "18538c139c8b3b96dc30289fe0f0d83cf66bac5bb932466fbb804e36474df651",
+      "mlcompiler/__main__.py": "174734a632f321b8ecee2f5f21686db04c310a3a7f36e9f4881a56e0794223ca",
+      "mlcompiler/measurement.py": "11b79e2de964071d00688f4fb2d93da348ed94e78c0a6912d83d832aea58b281",
+      "mlcompiler/frontends.py": "132ea6cffc6f19e4daf8478dc4e9572d47b1ab24919194b045819a548965a8a7",
+      "mlcompiler/dashboard.py": "c348939ab3747e33a9a80d99e7187fa6b11cb3ccee655f5653e807a304a20238",
+      "mlcompiler/experiment.py": "dda50c564c329ef68e43831cee58f14fb767e39aedb1ec43859f8938fb889d03",
+      "compiler.py": "a2e906e64cd0da873f59002130d95c47741ccb8067ef94c7869483ac2388ec80",
+      "runtime.py": "265097104edd6a723a3763d2389fd201f4eb7549a5b53c5a39de1cc7275cf767"
+    }
+  },
+  "measurement": {
+    "warmup": 3,
+    "batches": 7,
+    "iterations": 20,
+    "seed": 19
+  },
+  "learning": "No fitted model. Online workload-local calibration only. Family splits reserved for future model training; evaluation observations never influence decisions.",
+  "limitations": [
+    "CPU interpreter timings include Python overhead; not native CPU code generation",
+    "Fused CPU nodes still materialize PyTorch intermediates",
+    "No GPU execution or timings",
+    "No reliable memory-use measurements collected",
+    "Small noisy sample; does not establish novelty or general performance gains"
+  ],
+  "workloads": [
+    {
+      "name": "constant",
+      "family": "constant",
+      "seed": 7,
+      "frontend": "native",
+      "frontend_preparation_ms": 1406.5567340003327,
+      "frontend_reference_checked": true,
+      "input_parameters": [
+        {
+          "shape": [
+            32
+          ],
+          "dtype": "torch.float32"
+        }
+      ],
+      "original_graph": "graph constant(%x):\n  %x = input() : (32,) / torch.float32\n  %scale = constant() : () / torch.float32 value=[1.5]\n  %bias = constant() : () / torch.float32 value=[0.5]\n  %extra = constant() : () / torch.float32 value=[2.0]\n  %foldable = multiply(%scale, %extra) : () / torch.float32\n  %product = multiply(%x, %foldable) : (32,) / torch.float32\n  %shift = add(%product, %bias) : (32,) / torch.float32\n  %output = relu(%shift) : (32,) / torch.float32\n  return %output",
+      "features": {
+        "compute_ops": 4,
+        "operators": {
+          "multiply": 2,
+          "add": 1,
+          "relu": 1
+        },
+        "inputs": 1,
+        "constants": 3,
+        "shared_values": 0,
+        "shapes": [
+          [
+            32
+          ]
+        ],
+        "dtypes": [
+          "torch.float32"
+        ],
+        "estimated_compute_output_bytes": 388,
+        "memory_note": "Sum of logical compute output sizes; not measured peak memory or allocation count"
+      },
+      "strategies": {
+        "baseline": {
+          "candidate": "baseline",
+          "decision": "No optimization requested",
+          "planning_ms": 0.3907829996023793,
+          "optimization_ms": 0.005144999704498332,
+          "backend_compile_ms": 3.8034879999031546,
+          "final_validation_ms": 10.240208000141138,
+          "total_compile_ms": 14.452995999818086,
+          "compile_time_invariants": "topology, arity, metadata, static shapes checked",
+          "sample_validation": {
+            "passed": true,
+            "samples": 2,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "heldout_validation": {
+            "passed": true,
+            "samples": 1,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "graph": "graph constant(%x):\n  %x = input() : (32,) / torch.float32\n  %scale = constant() : () / torch.float32 value=[1.5]\n  %bias = constant() : () / torch.float32 value=[0.5]\n  %extra = constant() : () / torch.float32 value=[2.0]\n  %foldable = multiply(%scale, %extra) : () / torch.float32\n  %product = multiply(%x, %foldable) : (32,) / torch.float32\n  %shift = add(%product, %bias) : (32,) / torch.float32\n  %output = relu(%shift) : (32,) / torch.float32\n  return %output",
+          "analysis": {
+            "compute_ops": 4,
+            "operators": {
+              "multiply": 2,
+              "add": 1,
+              "relu": 1
+            },
+            "inputs": 1,
+            "constants": 3,
+            "shared_values": 0,
+            "shapes": [
+              [
+                32
+              ]
+            ],
+            "dtypes": [
+              "torch.float32"
+            ],
+            "estimated_compute_output_bytes": 388,
+            "memory_note": "Sum of logical compute output sizes; not measured peak memory or allocation count"
+          },
+          "pass_records": [],
+          "calibration": {},
+          "execution": {
+            "raw_ms": [
+              0.0292508,
+              0.02957655,
+              0.0269963,
+              0.0253886,
+              0.02576255,
+              0.0257778,
+              0.02579405
+            ],
+            "median_ms": 0.02579405,
+            "min_ms": 0.0253886,
+            "max_ms": 0.02957655,
+            "stdev_ms": 0.0017678303108882478,
+            "mad_ms": 0.0004054499999999982
+          }
+        },
+        "conventional": {
+          "candidate": "conventional",
+          "decision": "Deterministic bounded fixed-point pass policy; failed rewrites roll back",
+          "planning_ms": 54.81441299980361,
+          "optimization_ms": 54.38877000051434,
+          "backend_compile_ms": 2.507049000087136,
+          "final_validation_ms": 7.591612999931385,
+          "total_compile_ms": 64.91982599982293,
+          "compile_time_invariants": "topology, arity, metadata, static shapes checked",
+          "sample_validation": {
+            "passed": true,
+            "samples": 2,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "heldout_validation": {
+            "passed": true,
+            "samples": 1,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "graph": "graph constant(%x):\n  %x = input() : (32,) / torch.float32\n  %bias = constant() : () / torch.float32 value=[0.5]\n  %foldable = constant() : () / torch.float32 value=[3.0]\n  %output = fused_affine_relu(%x, %foldable, %bias) : (32,) / torch.float32\n  return %output",
+          "analysis": {
+            "compute_ops": 1,
+            "operators": {
+              "fused_affine_relu": 1
+            },
+            "inputs": 1,
+            "constants": 2,
+            "shared_values": 0,
+            "shapes": [
+              [
+                32
+              ]
+            ],
+            "dtypes": [
+              "torch.float32"
+            ],
+            "estimated_compute_output_bytes": 128,
+            "memory_note": "Sum of logical compute output sizes; not measured peak memory or allocation count"
+          },
+          "pass_records": [
+            {
+              "name": "constant_folding",
+              "iteration": 1,
+              "status": "applied",
+              "changes": 1,
+              "reason": "Folded 1 static expressions; 0 skipped (unknown/over-budget size)",
+              "validated": true,
+              "before_ops": 4,
+              "after_ops": 3,
+              "applicable": true,
+              "candidate": "conventional"
+            },
+            {
+              "name": "dead_code_elimination",
+              "iteration": 1,
+              "status": "applied",
+              "changes": 2,
+              "reason": "Removed 2 unreachable pure values; input signature preserved",
+              "validated": true,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": true,
+              "candidate": "conventional"
+            },
+            {
+              "name": "algebraic_simplification",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "layout_simplification",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "affine_relu_fusion",
+              "iteration": 1,
+              "status": "applied",
+              "changes": 1,
+              "reason": "Fused 1 single-use multiply \u2192 add \u2192 ReLU chains; shared or graph-output intermediates are preserved; operand order must match. CPU groups dispatch, not tensor allocation",
+              "validated": true,
+              "before_ops": 3,
+              "after_ops": 1,
+              "applicable": true,
+              "candidate": "conventional"
+            },
+            {
+              "name": "constant_folding",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Folded 0 static expressions; 0 skipped (unknown/over-budget size); no structural progress",
+              "validated": false,
+              "before_ops": 1,
+              "after_ops": 1,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "dead_code_elimination",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Removed 0 unreachable pure values; input signature preserved; no structural progress",
+              "validated": false,
+              "before_ops": 1,
+              "after_ops": 1,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "algebraic_simplification",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 1,
+              "after_ops": 1,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "layout_simplification",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 1,
+              "after_ops": 1,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "affine_relu_fusion",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 1,
+              "after_ops": 1,
+              "applicable": false,
+              "candidate": "conventional"
+            }
+          ],
+          "calibration": {},
+          "execution": {
+            "raw_ms": [
+              0.0200119,
+              0.0198705,
+              0.0179113,
+              0.01697995,
+              0.01698405,
+              0.0172315,
+              0.0171517
+            ],
+            "median_ms": 0.0172315,
+            "min_ms": 0.01697995,
+            "max_ms": 0.0200119,
+            "stdev_ms": 0.0013499632698266094,
+            "mad_ms": 0.0002515499999999997
+          }
+        },
+        "intelligent": {
+          "candidate": "baseline",
+          "decision": "Calibration best=conventional; gain=0.031795 ms, required margin=0.045072 ms (max of 5% baseline and 2\u00d7 summed MAD); selected baseline. Heuristic, not a confidence interval.",
+          "planning_ms": 185.8387619995483,
+          "optimization_ms": 92.2728420000567,
+          "backend_compile_ms": 1.5888870002527256,
+          "final_validation_ms": 5.006662000596407,
+          "total_compile_ms": 192.44470099965838,
+          "compile_time_invariants": "topology, arity, metadata, static shapes checked",
+          "sample_validation": {
+            "passed": true,
+            "samples": 2,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "heldout_validation": {
+            "passed": true,
+            "samples": 1,
+            "rtol": 1e-05,
+            "atol": 1e-06,
+            "message": "Sample-based runtime equivalence passed; not a proof"
+          },
+          "graph": "graph constant(%x):\n  %x = input() : (32,) / torch.float32\n  %scale = constant() : () / torch.float32 value=[1.5]\n  %bias = constant() : () / torch.float32 value=[0.5]\n  %extra = constant() : () / torch.float32 value=[2.0]\n  %foldable = multiply(%scale, %extra) : () / torch.float32\n  %product = multiply(%x, %foldable) : (32,) / torch.float32\n  %shift = add(%product, %bias) : (32,) / torch.float32\n  %output = relu(%shift) : (32,) / torch.float32\n  return %output",
+          "analysis": {
+            "compute_ops": 4,
+            "operators": {
+              "multiply": 2,
+              "add": 1,
+              "relu": 1
+            },
+            "inputs": 1,
+            "constants": 3,
+            "shared_values": 0,
+            "shapes": [
+              [
+                32
+              ]
+            ],
+            "dtypes": [
+              "torch.float32"
+            ],
+            "estimated_compute_output_bytes": 388,
+            "memory_note": "Sum of logical compute output sizes; not measured peak memory or allocation count"
+          },
+          "pass_records": [
+            {
+              "name": "constant_folding",
+              "iteration": 1,
+              "status": "applied",
+              "changes": 1,
+              "reason": "Folded 1 static expressions; 0 skipped (unknown/over-budget size)",
+              "validated": true,
+              "before_ops": 4,
+              "after_ops": 3,
+              "applicable": true,
+              "candidate": "conventional"
+            },
+            {
+              "name": "dead_code_elimination",
+              "iteration": 1,
+              "status": "applied",
+              "changes": 2,
+              "reason": "Removed 2 unreachable pure values; input signature preserved",
+              "validated": true,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": true,
+              "candidate": "conventional"
+            },
+            {
+              "name": "algebraic_simplification",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "layout_simplification",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "affine_relu_fusion",
+              "iteration": 1,
+              "status": "applied",
+              "changes": 1,
+              "reason": "Fused 1 single-use multiply \u2192 add \u2192 ReLU chains; shared or graph-output intermediates are preserved; operand order must match. CPU groups dispatch, not tensor allocation",
+              "validated": true,
+              "before_ops": 3,
+              "after_ops": 1,
+              "applicable": true,
+              "candidate": "conventional"
+            },
+            {
+              "name": "constant_folding",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Folded 0 static expressions; 0 skipped (unknown/over-budget size); no structural progress",
+              "validated": false,
+              "before_ops": 1,
+              "after_ops": 1,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "dead_code_elimination",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Removed 0 unreachable pure values; input signature preserved; no structural progress",
+              "validated": false,
+              "before_ops": 1,
+              "after_ops": 1,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "algebraic_simplification",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 1,
+              "after_ops": 1,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "layout_simplification",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 1,
+              "after_ops": 1,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "affine_relu_fusion",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 1,
+              "after_ops": 1,
+              "applicable": false,
+              "candidate": "conventional"
+            },
+            {
+              "name": "constant_folding",
+              "iteration": 1,
+              "status": "applied",
+              "changes": 1,
+              "reason": "Folded 1 static expressions; 0 skipped (unknown/over-budget size)",
+              "validated": true,
+              "before_ops": 4,
+              "after_ops": 3,
+              "applicable": true,
+              "candidate": "cleanup_only"
+            },
+            {
+              "name": "dead_code_elimination",
+              "iteration": 1,
+              "status": "applied",
+              "changes": 2,
+              "reason": "Removed 2 unreachable pure values; input signature preserved",
+              "validated": true,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": true,
+              "candidate": "cleanup_only"
+            },
+            {
+              "name": "algebraic_simplification",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": false,
+              "candidate": "cleanup_only"
+            },
+            {
+              "name": "layout_simplification",
+              "iteration": 1,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": false,
+              "candidate": "cleanup_only"
+            },
+            {
+              "name": "constant_folding",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Folded 0 static expressions; 0 skipped (unknown/over-budget size); no structural progress",
+              "validated": false,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": false,
+              "candidate": "cleanup_only"
+            },
+            {
+              "name": "dead_code_elimination",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Removed 0 unreachable pure values; input signature preserved; no structural progress",
+              "validated": false,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": false,
+              "candidate": "cleanup_only"
+            },
+            {
+              "name": "algebraic_simplification",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": false,
+              "candidate": "cleanup_only"
+            },
+            {
+              "name": "layout_simplification",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 3,
+              "after_ops": 3,
+              "applicable": false,
+              "candidate": "cleanup_only"
+            },
+            {
+              "name": "affine_relu_fusion",
+              "iteration": 1,
+              "status": "applied",
+              "changes": 1,
+              "reason": "Fused 1 single-use multiply \u2192 add \u2192 ReLU chains; shared or graph-output intermediates are preserved; operand order must match. CPU groups dispatch, not tensor allocation",
+              "validated": true,
+              "before_ops": 4,
+              "after_ops": 2,
+              "applicable": true,
+              "candidate": "fusion_only"
+            },
+            {
+              "name": "affine_relu_fusion",
+              "iteration": 2,
+              "status": "skipped",
+              "changes": 0,
+              "reason": "Required operator preconditions absent",
+              "validated": false,
+              "before_ops": 2,
+              "after_ops": 2,
+              "applicable": false,
+              "candidate": "fusion_only"
+            }
+          ],
+          "calibration": {
+            "config": {
+              "warmup": 3,
+              "batches": 7,
+              "iterations": 20,
+              "seed": 19
+            },
+            "orders": [
+              [
+                "conventional",
+                "fusion_only",
+                "cleanup_only",
+                "baseline"
+              ],
+              [
+                "baseline",
+                "cleanup_only",
+                "fusion_only",
+                "conventional"
+              ],
+              [
+                "conventional",
+                "baseline",
+                "fusion_only",
+                "cleanup_only"
+              ],
+              [
+                "fusion_only",
+                "conventional",
+                "baseline",
+                "cleanup_only"
+              ],
+              [
+                "baseline",
+                "cleanup_only",
+                "conventional",
+                "fusion_only"
+              ],
+              [
+                "fusion_only",
+                "cleanup_only",
+                "conventional",
+                "baseline"
+              ],
+              [
+                "conventional",
+                "fusion_only",
+                "cleanup_only",
+                "baseline"
+              ]
+            ],
+            "timings": {
+              "baseline": {
+                "raw_ms": [
+                  0.09746545,
+                  0.19279835,
+                  0.1047198,
+                  0.0966486,
+                  0.10495705,
+                  0.08282035,
+                  0.06450965
+                ],
+                "median_ms": 0.09746545,
+                "min_ms": 0.06450965,
+                "max_ms": 0.19279835,
+                "stdev_ms": 0.0407332512515866,
+                "mad_ms": 0.007491600000000001
+              },
+              "conventional": {
+                "raw_ms": [
+                  0.08071495,
+                  0.1511056,
+                  0.1058691,
+                  0.0656706,
+                  0.0617883,
+                  0.06199285,
+                  0.0456635
+                ],
+                "median_ms": 0.0656706,
+                "min_ms": 0.0456635,
+                "max_ms": 0.1511056,
+                "stdev_ms": 0.03592249668053731,
+                "mad_ms": 0.015044349999999998
+              },
+              "cleanup_only": {
+                "raw_ms": [
+                  0.09099565,
+                  0.0991146,
+                  0.08312535,
+                  0.07996815,
+                  0.0834817,
+                  0.0776317,
+                  0.0558756
+                ],
+                "median_ms": 0.08312535,
+                "min_ms": 0.0558756,
+                "max_ms": 0.0991146,
+                "stdev_ms": 0.013422103028134494,
+                "mad_ms": 0.005493650000000003
+              },
+              "fusion_only": {
+                "raw_ms": [
+                  0.0807039,
+                  0.2003447,
+                  0.08309285,
+                  0.08313305,
+                  0.07993335,
+                  0.07944115,
+                  0.05907265
+                ],
+                "median_ms": 0.0807039,
+                "min_ms": 0.05907265,
+                "max_ms": 0.2003447,
+                "stdev_ms": 0.047159783101939974,
+                "mad_ms": 0.002388950000000001
+              }
+            },
+            "method": "perf_counter_ns; warm CPU inference; randomized interleaved batches; includes Python dispatch/allocation and input checks; excludes compilation and validation",
+            "scope": "Same-workload online calibration; not a trained predictor or held-out performance estimate",
+            "candidate_preparation_and_measurement_ms": 93.32261700001254
+          },
+          "execution": {
+            "raw_ms": [
+              0.0301056,
+              0.0291739,
+              0.02556705,
+              0.02561835,
+              0.0257158,
+              0.02539475,
+              0.0289657
+            ],
+            "median_ms": 0.0257158,
+            "min_ms": 0.02539475,
+            "max_ms": 0.0301056,
+            "stdev_ms": 0.0020850084931310396,
+            "mad_ms": 0.0003210499999999998
+          }
+        }
+      },
+      "original_graph_sha256": "6e6274c8a8a58c27759e9494b7984cdcc1ae263dd5d2bf3f34b3bb261a86c9eb",
+      "evaluation": {
+        "config": {
+          "warmup": 3,
+          "batches": 7,
+          "iterations": 20,
+          "seed": 19
+        },
+        "orders": [
+          [
+            "conventional",
+            "candidate/baseline",
+            "intelligent",
+            "candidate/fusion_only",
+            "candidate/conventional",
+            "baseline",
+            "candidate/cleanup_only"
+          ],
+          [
+            "conventional",
+            "baseline",
+            "candidate/fusion_only",
+            "candidate/cleanup_only",
+            "candidate/conventional",
+            "intelligent",
+            "candidate/baseline"
+          ],
+          [
+            "candidate/fusion_only",
+            "candidate/baseline",
+            "conventional",
+            "candidate/cleanup_only",
+            "baseline",
+            "intelligent",
+            "candidate/conventional"
+          ],
+          [
+            "conventional",
+            "candidate/baseline",
+            "candidate/cleanup_only",
+            "candidate/conventional",
+            "candidate/fusion_only",
+            "baseline",
+            "intelligent"
+          ],
+          [
+            "intelligent",
+            "candidate/conventional",
+            "candidate/cleanup_only",
+            "candidate/baseline",
+            "candidate/fusion_only",
+            "conventional",
+            "baseline"
+          ],
+          [
+            "intelligent",
+            "conventional",
+            "candidate/conventional",
+            "candidate/cleanup_only",
+            "candidate/baseline",
+            "baseline",
+            "candidate/fusion_only"
+          ],
+          [
+            "conventional",
+            "baseline",
+            "candidate/conventional",
+            "intelligent",
+            "candidate/cleanup_only",
+            "candidate/baseline",
+            "candidate/fusion_only"
+          ]
+        ],
+        "timings": {
+          "baseline": {
+            "raw_ms": [
+              0.0292508,
+              0.02957655,
+              0.0269963,
+              0.0253886,
+              0.02576255,
+              0.0257778,
+              0.02579405
+            ],
+            "median_ms": 0.02579405,
+            "min_ms": 0.0253886,
+            "max_ms": 0.02957655,
+            "stdev_ms": 0.0017678303108882478,
+            "mad_ms": 0.0004054499999999982
+          },
+          "conventional": {
+            "raw_ms": [
+              0.0200119,
+              0.0198705,
+              0.0179113,
+              0.01697995,
+              0.01698405,
+              0.0172315,
+              0.0171517
+            ],
+            "median_ms": 0.0172315,
+            "min_ms": 0.01697995,
+            "max_ms": 0.0200119,
+            "stdev_ms": 0.0013499632698266094,
+            "mad_ms": 0.0002515499999999997
+          },
+          "intelligent": {
+            "raw_ms": [
+              0.0301056,
+              0.0291739,
+              0.02556705,
+              0.02561835,
+              0.0257158,
+              0.02539475,
+              0.0289657
+            ],
+            "median_ms": 0.0257158,
+            "min_ms": 0.02539475,
+            "max_ms": 0.0301056,
+            "stdev_ms": 0.0020850084931310396,
+            "mad_ms": 0.0003210499999999998
+          },
+          "candidate/baseline": {
+            "raw_ms": [
+              0.02926475,
+              0.0289099,
+              0.02924625,
+              0.0259924,
+              0.02562735,
+              0.0253836,
+              0.0356149
+            ],
+            "median_ms": 0.0289099,
+            "min_ms": 0.0253836,
+            "max_ms": 0.0356149,
+            "stdev_ms": 0.003562352927590735,
+            "mad_ms": 0.0029175
+          },
+          "candidate/conventional": {
+            "raw_ms": [
+              0.01981895,
+              0.0191282,
+              0.01749935,
+              0.0172524,
+              0.0174558,
+              0.0172354,
+              0.01740275
+            ],
+            "median_ms": 0.0174558,
+            "min_ms": 0.0172354,
+            "max_ms": 0.01981895,
+            "stdev_ms": 0.0010505803735033673,
+            "mad_ms": 0.00020339999999999941
+          },
+          "candidate/cleanup_only": {
+            "raw_ms": [
+              0.02486555,
+              0.02488605,
+              0.0215503,
+              0.0214559,
+              0.02149485,
+              0.02190325,
+              0.02225695
+            ],
+            "median_ms": 0.02190325,
+            "min_ms": 0.0214559,
+            "max_ms": 0.02488605,
+            "stdev_ms": 0.001559252199621283,
+            "mad_ms": 0.00040839999999999974
+          },
+          "candidate/fusion_only": {
+            "raw_ms": [
+              0.02500375,
+              0.0244943,
+              0.0251642,
+              0.0225634,
+              0.0213538,
+              0.0213908,
+              0.02225205
+            ],
+            "median_ms": 0.0225634,
+            "min_ms": 0.0213538,
+            "max_ms": 0.0251642,
+            "stdev_ms": 0.0016717169314595618,
+            "mad_ms": 0.0012096000000000016
+          }
+        },
+        "method": "perf_counter_ns; warm CPU inference; randomized interleaved batches; includes Python dispatch/allocation and input checks; excludes compilation and validation"
+      },
+      "selection": {
+        "candidate_set": [
+          "baseline",
+          "conventional",
+          "cleanup_only",
+          "fusion_only"
+        ],
+        "evaluation_oracle": "conventional",
+        "regret_ms": 0.00826,
+        "baseline_speedup_ratio": 1.0030428763639474,
+        "conventional_speedup_ratio": 1.4969126309375271,
+        "regression_vs_baseline": false,
+        "regression_threshold_fraction": 0.05,
+        "selected_within_5pct_of_observed_oracle": false,
+        "extra_planning_ms": 185.44797899994592,
+        "extra_total_compile_ms": 177.9917049998403,
+        "break_even_calls_vs_baseline": 2274654.376994809,
+        "note": "Oracle/regret are noisy held-out observations over enumerated candidates, not ground truth or a trained-model accuracy claim"
+      },
+      "split": "evaluation"
+    }
+  ]
+}
