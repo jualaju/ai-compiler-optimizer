@@ -1,0 +1,2 @@
+# Optional frontend and independent ONNX reference evaluation; CPU core does not import it.
+onnx>=1.16,<2

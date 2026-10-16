@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Compiler Studio</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css"><script defer src="/vendor/cytoscape.min.js"></script><script defer src="/app.js"></script></head>
+<body>
+<header><a class="brand" href="/" aria-label="Compiler Studio home"><span class="brandmark">◆</span><span>Compiler Studio<small>AI COMPILER OPTIMIZATION</small></span></a><div class="host"><span class="dot"></span> LOCAL / CPU <span class="separator">│</span> <span id="session-label">Connecting…</span></div></header>
+<div class="shell">
+<aside class="sidebar">
+<div class="eyebrow">WORKSPACE</div>
+<nav role="tablist" aria-label="Compiler sections" aria-orientation="vertical">
+<button role="tab" data-tab="overview" aria-label="Overview" aria-selected="true">01 <span>Overview</span></button>
+<button role="tab" data-tab="graphs" aria-label="Graph Explorer" aria-selected="false">02 <span>Graph Explorer</span></button>
+<button role="tab" data-tab="ir" aria-label="IR Inspector" aria-selected="false">03 <span>IR Inspector</span></button>
+<button role="tab" data-tab="passes" aria-label="Optimization Passes" aria-selected="false">04 <span>Optimization Passes</span></button>
+<button role="tab" data-tab="compare" aria-label="Compare" aria-selected="false">05 <span>Compare</span></button>
+<button role="tab" data-tab="support" aria-label="Support Matrix" aria-selected="false">06 <span>Support Matrix</span></button>
+<button role="tab" data-tab="history" aria-label="Run History" aria-selected="false">07 <span>Run History</span></button>
+</nav>
+<div class="sidebar-note"><b>ONE PIPELINE. REAL DATA.</b><p>Frontend → IR → analysis → optimization → validation → CPU execution</p><p>GPU kernels are not executed in Studio.</p></div>
+</aside>
+<main>
+<div class="page-heading"><div><div class="eyebrow">COMPILER WORKSPACE</div><h1 id="page-title">Overview</h1></div><div class="run-badge" id="run-label">No workload captured</div></div>
+<section class="controls card" aria-label="Workload and compiler controls">
+<div class="control-row"><label>Input frontend<select id="frontend"><option value="native">Native built-in</option><option value="torch">PyTorch FX built-in</option><option value="native_json">Native JSON graph</option><option value="onnx">ONNX file on this machine</option></select></label><label id="workload-field">Workload<select id="workload"></select></label><label class="small-field">Size / batch<input id="size" type="number" value="32" min="1" max="65536"></label><label class="small-field">Seed<input id="seed" type="number" value="7" min="0" max="2147483647"></label><button id="capture" class="primary" disabled>Capture workload</button></div>
+<div id="native-fields" class="file-fields" hidden><label>Native graph JSON<textarea id="native-graph" rows="5" spellcheck="false" placeholder='{"version":1,"nodes":[...],"outputs":[...]}'></textarea></label><label>Input tensors JSON<textarea id="native-inputs" rows="5" spellcheck="false" placeholder='{"x":[2,-1,3,4]}'></textarea></label><button id="load-native-example">Load affine JSON example</button></div>
+<div id="onnx-fields" class="file-fields" hidden><label>ONNX path (server machine)<input id="onnx-path" placeholder="/home/…/model.onnx"></label><label>Inputs JSON path (server machine)<input id="onnx-inputs" placeholder="/home/…/inputs.json"></label><p>The optional ONNX frontend checks the supported operator subset and compares against ONNX ReferenceEvaluator.</p></div>
+<p id="workload-description" class="muted">Select a real workload to inspect its captured IR.</p>
+<div class="control-row second-row"><label>Optimization policy<select id="strategy"><option value="conventional">Conventional / safe fixed point</option><option value="intelligent">Intelligent / measured selection</option><option value="manual">Manual pass selection</option><option value="baseline">Baseline / no optimization</option></select></label><label class="small-field">Relative tolerance<input id="rtol" type="number" value="0.00001" step="any" min="0"></label><label class="small-field">Absolute tolerance<input id="atol" type="number" value="0.000001" step="any" min="0"></label><button id="optimize" disabled>Run optimization</button><button id="validate" disabled>Validate outputs</button></div>
+<fieldset id="manual-passes" hidden><legend>Manual passes (empty selection runs no passes)</legend><div id="pass-controls"></div></fieldset>
+</section>
+<div id="status" class="status" role="status" aria-live="polite">Connecting to the local compiler…</div>
+<div id="content"></div>
+</main>
+</div>
+<footer><span>Framework-neutral IR · PyTorch CPU runtime</span><span>Structural counts ≠ measured performance</span></footer>
+</body></html>

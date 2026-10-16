@@ -3,6 +3,22 @@
 import argparse
 import ast
 from datetime import datetime
+import importlib.util
+import os
+from pathlib import Path
+import sys
+
+def _use_project_environment():
+    """Use installed project dependencies when launched with system Python."""
+    if all(importlib.util.find_spec(name) is not None for name in ("torch", "rich")):
+        return
+    environment = Path(__file__).resolve().parent / ".venv"
+    python = environment / "bin" / "python"
+    if python.is_file() and Path(sys.prefix).resolve() != environment.resolve():
+        os.execv(str(python), [str(python), str(Path(__file__).resolve()), *sys.argv[1:]])
+
+
+_use_project_environment()
 
 from demo_ui import DemoUI
 
@@ -14,24 +30,40 @@ def main():
         action="store_true",
         help="open raw compiler details",
     )
+    parser.add_argument('--pipeline', action='store_true', help='open the common CPU compiler dashboard')
+    parser.add_argument('--source', choices=('native', 'torch', 'onnx'))
+    parser.add_argument('--workload', help='common-pipeline built-in workload')
+    parser.add_argument('--path', help='native JSON or ONNX graph file')
+    parser.add_argument('--inputs', help='file input values as a JSON mapping')
+    parser.add_argument('--size', type=int)
+    parser.add_argument('--strategy', choices=('baseline', 'conventional', 'intelligent', 'manual', 'compare'))
+    parser.add_argument('--passes', help='comma-separated manual pass names')
+    parser.add_argument('--compare', action='store_true', help='collect CPU strategy comparison')
+    parser.add_argument('--output', default='results/dashboard_comparison.json')
     args = parser.parse_args()
 
     ui = DemoUI()
     ui.intro()
+    if args.pipeline:
+        from mlcompiler.dashboard import run_dashboard
+        run_dashboard(ui, args)
+        return
 
     # Choose what actually enters the compiler.
     ui.console.print()
     ui.console.print("[bold cyan]MODEL INPUT[/]")
     ui.console.print("[1] Manual Tensor")
     ui.console.print("[2] Trained PyTorch MLP")
+    ui.console.print("[3] Common compiler / CPU workloads, passes and benchmarks")
     ui.console.print()
 
-    choice = ui.console.input(
-        "[cyan]Select model[/] [dim](2 = Trained MLP)[/]: "
-    ).strip() or "2"
+    from terminal_controls import choice as choose
+    choice = choose(ui.console, 'Select model: 1 manual, 2 trained MLP, 3 common pipeline', ('1', '2', '3'), '2')
 
-    if choice not in {"1", "2"}:
-        choice = "2"
+    if choice == '3':
+        from mlcompiler.dashboard import run_dashboard
+        run_dashboard(ui, args)
+        return
 
     # Manual mode gets the original interactive inputs.
     if choice == "1":
@@ -47,7 +79,9 @@ def main():
         model_mode = "trained_mlp"
         model_name = "TRAINED PYTORCH MLP"
 
-    ui.console.clear()
+    if ui.console.is_terminal and sys.stdin.isatty():
+        ui.console.clear()
+    ui.console.print("[cyan]Preparing compiler and CPU validation…[/]")
     trace = []
 
     def record(tag, message):
@@ -63,7 +97,19 @@ def main():
         "[cyan]Compiling model and validating CPU semantics…[/]",
         spinner="dots",
     ):
-        import torch
+        try:
+            import torch
+        except ModuleNotFoundError as exc:
+            if exc.name != "torch":
+                raise
+            raise RuntimeError(
+                "PyTorch is required for both demo modes. Install the CPU "
+                "build with `"
+                f"{sys.executable} -m pip install torch "
+                "--index-url https://download.pytorch.org/whl/cpu` "
+                "then install the project dependencies with `"
+                f"{sys.executable} -m pip install -r requirements.txt`."
+            ) from exc
 
         from compiler import (
             AffineReLU,
@@ -398,8 +444,8 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except (KeyboardInterrupt, EOFError):
-        pass
+    except KeyboardInterrupt:
+        print("\nDemo cancelled.", flush=True)
     except Exception as exc:
         from rich.console import Console
 

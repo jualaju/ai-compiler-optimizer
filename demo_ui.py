@@ -92,7 +92,7 @@ class DemoUI:
                 table.add_row('AFTER', Bar(len(before), 0, len(after), color='magenta', bgcolor='grey23'), str(len(after)))
         table.add_row('Intermediates', Bar(max(1, len(before)-1), 0, avoided, color='magenta'), f'{avoided} avoided')
         return panel('OPTIMIZATION IMPACT', Group(table,
-            Text('* Launches: structural estimate; no GPU timing', style='dim'),
+            Text('* Estimated launches; no GPU timing', style='dim', no_wrap=True, overflow='ellipsis'),
             Text('FUSION STATUS: ' + ('APPLIED' if data['fused'] else 'NOT APPLIED'), style='bold magenta')), 'magenta')
 
     def input_panel(self, data, rows):
@@ -116,11 +116,15 @@ class DemoUI:
             Text(f'float32 • {len(values)} elements', style='dim')))
 
     def result(self, data):
-        return panel('CPU VALIDATION', Group(Columns([
-            panel('ORIGINAL', Text(tensor_values(data['original'])), 'green'),
-            panel('OPTIMIZED', Text(tensor_values(data['optimized'])), 'green')], equal=True, expand=True),
-            Text('✓ NUMERICAL EQUIVALENCE VERIFIED', style='bold green'),
-            Text('Triton source verified • CPU semantics passed', style='dim green')), 'green')
+        outputs = Table.grid(expand=True)
+        outputs.add_column(ratio=1)
+        outputs.add_column(ratio=1)
+        outputs.add_row(
+            panel('ORIGINAL', Text(tensor_values(data['original']), no_wrap=True, overflow='ellipsis'), 'green'),
+            panel('OPTIMIZED', Text(tensor_values(data['optimized']), no_wrap=True, overflow='ellipsis'), 'green'))
+        return panel('CPU VALIDATION', Group(outputs,
+            Text('✓ NUMERICAL EQUIVALENCE VERIFIED', style='bold green', no_wrap=True, overflow='ellipsis'),
+            Text('Triton source verified • CPU semantics passed', style='dim green', no_wrap=True, overflow='ellipsis')), 'green')
 
     def status(self, data):
         return panel('COMPILER STATUS', Group(
@@ -199,6 +203,7 @@ class DemoUI:
             if debug:
                 self.console.print(panel('DEBUG DETAILS', Text(self.details(data))))
             return
+<<<<<<< HEAD
         is_windows = sys.platform == 'win32'
         if is_windows:
             import msvcrt
@@ -253,3 +258,10 @@ class DemoUI:
         finally:
             if not is_windows:
                 termios.tcsetattr(sys.stdin, termios.TCSADRAIN, original_settings)
+=======
+        from terminal_controls import browse
+        browse(self.console, lambda: self.dashboard(data),
+               {'k': lambda: data['source'], 'd': lambda: self.details(data)},
+               titles={'k': 'Kernel', 'd': 'Details'},
+               initial='d' if debug else 'overview', home_key='g', up_key='p', syntax_views=('k',))
+>>>>>>> 954befe21bc97807fb5a28456e7853a3acbd54a4
