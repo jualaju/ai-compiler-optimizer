@@ -1,6 +1,5 @@
 """Rich dashboard widgets and terminal interaction; no compiler transformations."""
 import math
-import select
 import sys
 
 from rich import box
@@ -200,13 +199,21 @@ class DemoUI:
             if debug:
                 self.console.print(panel('DEBUG DETAILS', Text(self.details(data))))
             return
-        import termios
-        import tty
+        is_windows = sys.platform == 'win32'
+        if is_windows:
+            import msvcrt
+        else:
+            import select
+            import termios
+            import tty
+
         mode = 'd' if debug else 'dashboard'
         offset = 0
-        original_settings = termios.tcgetattr(sys.stdin)
+        if not is_windows:
+            original_settings = termios.tcgetattr(sys.stdin)
         try:
-            tty.setcbreak(sys.stdin.fileno())
+            if not is_windows:
+                tty.setcbreak(sys.stdin.fileno())
             with Live(console=self.console, screen=True, auto_refresh=False) as live:
                 while True:
                     if mode == 'dashboard':
@@ -220,8 +227,20 @@ class DemoUI:
                         view = Group(self.status(data), panel('GENERATED GPU KERNEL // TRITON' if mode == 'k' else 'COMPILER DETAILS', content),
                             Text(f'Lines {offset+1}–{min(offset+page_size, len(lines))}/{len(lines)} • N/P scroll • G dashboard • Q quit', style='cyan'))
                     live.update(view, refresh=True)
-                    if select.select([sys.stdin], [], [], 0.25)[0]:
-                        key = sys.stdin.read(1).lower()
+                    if is_windows:
+                        key = None
+                        if msvcrt.kbhit():
+                            key = msvcrt.getwch()
+                            if key in ('\x00', '\xe0'):
+                                msvcrt.getwch()
+                                key = None
+                            else:
+                                key = key.lower()
+                    else:
+                        key = (sys.stdin.read(1).lower()
+                               if select.select([sys.stdin], [], [], 0.25)[0]
+                               else None)
+                    if key is not None:
                         if not key or key == 'q':
                             break
                         if key in ('k', 'd', 'g'):
@@ -232,4 +251,5 @@ class DemoUI:
                         elif key == 'p':
                             offset = max(0, offset - 1)
         finally:
-            termios.tcsetattr(sys.stdin, termios.TCSADRAIN, original_settings)
+            if not is_windows:
+                termios.tcsetattr(sys.stdin, termios.TCSADRAIN, original_settings)
